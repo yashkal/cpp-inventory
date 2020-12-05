@@ -7,16 +7,22 @@ help: ## Prints help for targets with comments
 inv.dat: ## Copy test db file to root
 	cp input/inv.dat .
 
-# test: bats inv.dat
-# 	./bats
+run: 265inventory ## Build and run assn2 utility
+	./$<
 
-bats: ## Download bats-core for bash testing
-	git clone https://github.com/bats-core/bats-core.git $(SOURCE)bats-core
-	$(SOURCE)bats-core/install.sh $(BIN)$@
-	ln -s $(BIN)$@/bin/bats $@
+265inventory: main.c ## Build assn2 utility
+	gcc main.c -o $@
 
 clean: ## Clean directories
 	-rm -rf $(SOURCE)
 	-rm -r $(BIN)
-	-rm bats
 	-rm inv.dat
+	-rm 265inventory
+	-rm -rf C
+	-rm -rf Code
+
+C: ## Download lab folder
+	-cp -r ~kschmidt/public_html/CS265/Labs/C .
+
+Code: ## Downloads lecture folder
+	-cp -r ~kschmidt/public_html/CS265/Lectures/C/Code .
