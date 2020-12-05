@@ -28,6 +28,19 @@ int main(int argc, char *argv[])
 	exit(EXIT_FAILURE);
     }
 
+    // Read one line of input from file
+    // Review linked list on page 428 in book
+
+    itemNode *first;
+    itemNode *new_node;
+
+    first = NULL;
+
+    new_node = malloc(sizeof(itemNode));
+    fscanf(fp, "%s:%hu:%s", new_node->id, &new_node->qty, new_node->desc);
+    new_node->next = first;
+    first = new_node;
+
     fclose(fp);
     fp = NULL;
 
