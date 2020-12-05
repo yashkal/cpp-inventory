@@ -13,6 +13,8 @@ struct itemNode {
 } ;
 
 int prompt(char **buff, size_t *len, FILE *fp);
+int get_desc_column_size(itemNode *p);
+int get_id_column_size(itemNode *p);
 
 int main(int argc, char *argv[])
 {
@@ -37,7 +39,12 @@ int main(int argc, char *argv[])
     first = NULL;
 
     new_node = malloc(sizeof(itemNode));
-    fscanf(fp, "%[^:]:%hu:%[^:\n]", new_node->id, &new_node->qty, new_node->desc);
+    fscanf(fp, "%[^:]:%hu:%[^:\n]\n", new_node->id, &new_node->qty, new_node->desc);
+    new_node->next = first;
+    first = new_node;
+
+    new_node = malloc(sizeof(itemNode));
+    fscanf(fp, "%[^:]:%hu:%[^:\n]\n", new_node->id, &new_node->qty, new_node->desc);
     new_node->next = first;
     first = new_node;
 
@@ -45,8 +52,8 @@ int main(int argc, char *argv[])
     fp = NULL;
 
     // Get max size for string fields to adjust printing size
-    int max_desc_length = strlen(first->desc) + 1;
-    int max_id_length = strlen(first->id) + 1;
+    int max_desc_length = get_desc_column_size(first);
+    int max_id_length = get_id_column_size(first);
 
     while( prompt( &buff, &len, stdin ) != -1 )
     {
@@ -69,7 +76,7 @@ int main(int argc, char *argv[])
 	    itemNode *p;
 	    for (p = first; p != NULL; p = p->next)
 	    {
-		printf("%-.*s   %5hu    %-.*s\n", max_desc_length, p->desc, p->qty, max_id_length, p->id);
+		printf("%-*s  %5hu    %-*s\n", max_desc_length, p->desc, p->qty, max_id_length, p->id);
 	    }
 	}
 	else // default
@@ -84,4 +91,30 @@ int prompt(char **buff, size_t *len, FILE *fp)
 {
     printf("%% ");
     return getline( buff, len, fp );
+}
+
+int get_desc_column_size(itemNode *first)
+{
+    itemNode *p;
+    int max_size = 0;
+    int size;
+    for (p = first; p != NULL; p = p->next)
+    {
+	size = strlen(p->desc);
+	if ( size > max_size ) max_size = size;
+    }
+    return max_size + 1;
+}
+
+int get_id_column_size(itemNode *first)
+{
+    itemNode *p;
+    int max_size = 0;
+    int size;
+    for (p = first; p != NULL; p = p->next)
+    {
+	size = strlen(p->id);
+	if ( size > max_size ) max_size = size;
+    }
+    return max_size + 1;
 }
