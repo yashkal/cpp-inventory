@@ -37,12 +37,16 @@ int main(int argc, char *argv[])
     first = NULL;
 
     new_node = malloc(sizeof(itemNode));
-    fscanf(fp, "%s:%hu:%s", new_node->id, &new_node->qty, new_node->desc);
+    fscanf(fp, "%[^:]:%hu:%[^:\n]", new_node->id, &new_node->qty, new_node->desc);
     new_node->next = first;
     first = new_node;
 
     fclose(fp);
     fp = NULL;
+
+    // Get max size for string fields to adjust printing size
+    int max_desc_length = strlen(first->desc) + 1;
+    int max_id_length = strlen(first->id) + 1;
 
     while( prompt( &buff, &len, stdin ) != -1 )
     {
@@ -51,7 +55,18 @@ int main(int argc, char *argv[])
 
 	if (strcmp(input_string, "print") == 0)
 	{
-	    // do something
+	    // print header
+	    printf("%-*s  %-6s  %-*s\n", max_desc_length, "  DESC", "  QTY", max_id_length + 6, "  ID");
+	    int i;
+	    for (i = 0; i < max_desc_length; ++i) putc('-', stdout);
+	    printf("  ");
+	    for (i = 0; i < 6; ++i) putc('-', stdout);
+	    printf("  ");
+	    for (i = 0; i < max_id_length + 1; ++i) putc('-', stdout);
+	    putc('\n', stdout);
+
+	    // print items in database
+	    printf("%-.*s   %5hu    %-.*s\n", max_desc_length, first->desc, first->qty, max_id_length, first->id);
 	}
 	else // default
 	{
