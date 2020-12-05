@@ -66,7 +66,11 @@ int main(int argc, char *argv[])
 	    putc('\n', stdout);
 
 	    // print items in database
-	    printf("%-.*s   %5hu    %-.*s\n", max_desc_length, first->desc, first->qty, max_id_length, first->id);
+	    itemNode *p;
+	    for (p = first; p != NULL; p = p->next)
+	    {
+		printf("%-.*s   %5hu    %-.*s\n", max_desc_length, p->desc, p->qty, max_id_length, p->id);
+	    }
 	}
 	else // default
 	{
