@@ -19,6 +19,17 @@ int main(int argc, char *argv[])
     char *buff = NULL ;
     size_t len = 0 ;
     char input_string[10];
+    FILE *fp;
+
+    // Read database
+    if ((fp = fopen("inv.dat", "r")) == NULL)
+    {
+	printf("Can't open inv.dat\n");
+	exit(EXIT_FAILURE);
+    }
+
+    fclose(fp);
+    fp = NULL;
 
     while( prompt( &buff, &len, stdin ) != -1 )
     {
