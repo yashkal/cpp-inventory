@@ -98,23 +98,39 @@ void add(itemNode *first, char *buff)
     char id[16];
     unsigned short qty;
 
+    // Throwaway token for command
     token = strtok(buff, " ");
 
+    // Token for id
     token = strtok(NULL, ":");
+    if (token == NULL)
+    {
+	printf("NAK Incorrect syntax.\n");
+	return;
+    }
     sscanf(token, "%s", id);
 
+    // Token for quantity
     token = strtok(NULL, ":");
+    if (token == NULL)
+    {
+	printf("NAK Incorrect syntax.\n");
+	return;
+    }
     sscanf(token, "%hu", &qty);
 
+    // Search in linked list to add quantity
     itemNode *p;
     for (p = first; p != NULL; p = p->next)
     {
 	if (strcmp(p->id, id) == 0)
 	{
 	    p->qty += qty;
-	    break;
+	    printf("ACK\n");
+	    return;
 	}
     }
+    printf("NAK Unknown Item\n");
 }
 
 itemNode* read_db(void)
