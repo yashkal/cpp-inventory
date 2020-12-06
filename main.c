@@ -13,8 +13,9 @@ struct itemNode {
 } ;
 
 int prompt(char **buff, size_t *len, FILE *fp);
-int get_desc_column_size(itemNode *p);
-int get_id_column_size(itemNode *p);
+int get_desc_column_size(itemNode *first);
+int get_id_column_size(itemNode *first);
+void print(itemNode *first);
 
 int main(int argc, char *argv[])
 {
@@ -50,37 +51,14 @@ int main(int argc, char *argv[])
     char *buff = NULL ;
     size_t len = 0 ;
     char input_string[10];
-    int max_desc_length = get_desc_column_size(first);
-    int max_id_length = get_id_column_size(first);
 
     while( prompt( &buff, &len, stdin ) != -1 )
     {
 	buff[ strlen(buff)-1 ] = '\0' ;  /* Overwrite the newline */
 	sscanf(buff, "%s", input_string);
 
-	if (strcmp(input_string, "print") == 0)
-	{
-	    // print header
-	    printf("%-*s  %-6s  %-*s\n", max_desc_length, "  DESC", "  QTY", max_id_length + 6, "  ID");
-	    int i;
-	    for (i = 0; i < max_desc_length; ++i) putc('-', stdout);
-	    printf("  ");
-	    for (i = 0; i < 6; ++i) putc('-', stdout);
-	    printf("  ");
-	    for (i = 0; i < max_id_length + 1; ++i) putc('-', stdout);
-	    putc('\n', stdout);
-
-	    // print items in database
-	    itemNode *p;
-	    for (p = first; p != NULL; p = p->next)
-	    {
-		printf("%-*s  %5hu    %-*s\n", max_desc_length, p->desc, p->qty, max_id_length, p->id);
-	    }
-	}
-	else // default
-	{
-	    printf("Unrecognized command\n");
-	}
+	if (strcmp(input_string, "print") == 0) print(first);
+	else printf("Unrecognized command\n");
     }
     return 0;
 }
@@ -115,4 +93,27 @@ int get_id_column_size(itemNode *first)
 	if ( size > max_size ) max_size = size;
     }
     return max_size + 1;
+}
+
+void print(itemNode *first)
+{
+    int max_desc_length = get_desc_column_size(first);
+    int max_id_length = get_id_column_size(first);
+
+    // print header
+    printf("%-*s  %-6s  %-*s\n", max_desc_length, "  DESC", "  QTY", max_id_length + 6, "  ID");
+    int i;
+    for (i = 0; i < max_desc_length; ++i) putc('-', stdout);
+    printf("  ");
+    for (i = 0; i < 6; ++i) putc('-', stdout);
+    printf("  ");
+    for (i = 0; i < max_id_length + 1; ++i) putc('-', stdout);
+    putc('\n', stdout);
+
+    // print items in database
+    itemNode *p;
+    for (p = first; p != NULL; p = p->next)
+    {
+	printf("%-*s  %5hu    %-*s\n", max_desc_length, p->desc, p->qty, max_id_length, p->id);
+    }
 }
