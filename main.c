@@ -94,6 +94,8 @@ void print(itemNode *first)
     itemNode *p;
     for (p = first; p != NULL; p = p->next)
 	printf("%-*s  %5hu    %-*s\n", max_desc_length, p->desc, p->qty, max_id_length, p->id);
+
+    printf("ACK\n");
 }
 
 void add(itemNode *first, char *buff)
@@ -211,6 +213,7 @@ void quit(itemNode *first)
     p = NULL;
 
     // Exit program
+    printf("ACK\n");
     exit(EXIT_SUCCESS);
 }
 
