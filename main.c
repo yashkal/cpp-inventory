@@ -1,14 +1,14 @@
 /*******************************************************************************
-* fsm.c
-*
-* An interactive utility that maintains a database for assn3
-*
-* Author: Yash Kalebere
-* Date: Dec 6, 2020
-*
-* gcc (Ubuntu 7.5.0-3ubuntu1~18.04) 7.5.0 , on
-* GNU/Linux 4.15.0-117-generic x86_64
-*******************************************************************************/
+ * fsm.c
+ *
+ * An interactive utility that maintains a database for assn3
+ *
+ * Author: Yash Kalebere
+ * Date: Dec 6, 2020
+ *
+ * gcc (Ubuntu 7.5.0-3ubuntu1~18.04) 7.5.0 , on
+ * GNU/Linux 4.15.0-117-generic x86_64
+ *******************************************************************************/
 
 #define _GNU_SOURCE
 #include <string.h>
@@ -56,13 +56,13 @@ int main(int argc, char *argv[])
 }
 
 /******************************************************************************
-* Function: prompt
-* Description: Customized prompt that starts with "% "
-* Where:
-*   buff - address of buffer to write to
-*   len - allocated size
-*   fp - stream to read from
-*****************************************************************************/
+ * Function: prompt
+ * Description: Customized prompt that starts with "% "
+ * Where:
+ *   buff - address of buffer to write to
+ *   len - allocated size
+ *   fp - stream to read from
+ *****************************************************************************/
 int prompt(char **buff, size_t *len, FILE *fp)
 {
     printf("%% ");
@@ -70,12 +70,12 @@ int prompt(char **buff, size_t *len, FILE *fp)
 }
 
 /******************************************************************************
-* Function: get_desc_column_size
-* Description: Format spec for pretty printed table (DESC) from linked list
-* Where:
-*   first - Pointer to linked list
-* Return: Largest width for description entry
-*****************************************************************************/
+ * Function: get_desc_column_size
+ * Description: Format spec for pretty printed table (DESC) from linked list
+ * Where:
+ *   first - Pointer to linked list
+ * Return: Largest width for description entry
+ *****************************************************************************/
 int get_desc_column_size(itemNode *first)
 {
     itemNode *p;
@@ -90,12 +90,12 @@ int get_desc_column_size(itemNode *first)
 }
 
 /******************************************************************************
-* Function: get_id_column_size
-* Description: Format spec for pretty printed table (ID) from linked list
-* Where:
-*   first - Pointer to linked list
-* Return: Largest width for ID entry
-*****************************************************************************/
+ * Function: get_id_column_size
+ * Description: Format spec for pretty printed table (ID) from linked list
+ * Where:
+ *   first - Pointer to linked list
+ * Return: Largest width for ID entry
+ *****************************************************************************/
 int get_id_column_size(itemNode *first)
 {
     itemNode *p;
@@ -110,11 +110,11 @@ int get_id_column_size(itemNode *first)
 }
 
 /******************************************************************************
-* Function: print
-* Description: Pretty prints collection of items
-* Where:
-*   first - Pointer to linked list
-*****************************************************************************/
+ * Function: print
+ * Description: Pretty prints collection of items
+ * Where:
+ *   first - Pointer to linked list
+ *****************************************************************************/
 void print(itemNode *first)
 {
     int max_desc_length = get_desc_column_size(first);
@@ -139,12 +139,12 @@ void print(itemNode *first)
 }
 
 /******************************************************************************
-* Function: add
-* Description: Add quantity to item
-* Where:
-*   first - Pointer to linked list
-*   buff - Buffer that stores user input to parse
-*****************************************************************************/
+ * Function: add
+ * Description: Add quantity to item
+ * Where:
+ *   first - Pointer to linked list
+ *   buff - Buffer that stores user input to parse
+ *****************************************************************************/
 void add(itemNode *first, char *buff)
 {
     char *token = NULL;
@@ -187,12 +187,12 @@ void add(itemNode *first, char *buff)
 }
 
 /******************************************************************************
-* Function: remove_
-* Description: Remove quantity from item
-* Where:
-*   first - Pointer to linked list
-*   buff - Buffer that stores user input to parse
-*****************************************************************************/
+ * Function: remove_
+ * Description: Remove quantity from item
+ * Where:
+ *   first - Pointer to linked list
+ *   buff - Buffer that stores user input to parse
+ *****************************************************************************/
 void remove_(itemNode *first, char *buff)
 {
     char *token = NULL;
@@ -240,11 +240,11 @@ void remove_(itemNode *first, char *buff)
 }
 
 /******************************************************************************
-* Function: quit
-* Description: Writes updated db to disk, frees memory, and exits utility
-* Where:
-*   first - Pointer to linked list
-*****************************************************************************/
+ * Function: quit
+ * Description: Writes updated db to disk, frees memory, and exits utility
+ * Where:
+ *   first - Pointer to linked list
+ *****************************************************************************/
 void quit(itemNode *first)
 {
     FILE *fp;
@@ -278,10 +278,10 @@ void quit(itemNode *first)
 }
 
 /******************************************************************************
-* Function: read_db
-* Description: Read inv.dat into linked list
-* Return: Pointer to newly created linked list
-*****************************************************************************/
+ * Function: read_db
+ * Description: Read inv.dat into linked list
+ * Return: Pointer to newly created linked list
+ *****************************************************************************/
 itemNode* read_db(void)
 {
     FILE *fp;

@@ -4,6 +4,9 @@ help: ## Prints help for targets with comments
 inv.dat: ## Copy test db file to root
 	cp input/inv.dat .
 
+view:
+	less main.c
+
 run: 265inventory ## Build and run assn3 utility
 	./$<
 
@@ -16,11 +19,3 @@ clean: # Required assn3 target
 cleanall: clean ## Clean directories
 	-rm inv.dat
 	-rm 265inventory
-	-rm -rf C
-	-rm -rf Code
-
-C: ## Download lab folder
-	-cp -rp ~kschmidt/public_html/CS265/Labs/C .
-
-Code: ## Downloads lecture folder
-	-cp -rp ~kschmidt/public_html/CS265/Lectures/C/Code .
