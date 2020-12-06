@@ -17,6 +17,7 @@ int get_desc_column_size(itemNode *first);
 int get_id_column_size(itemNode *first);
 void print(itemNode *first);
 void add(itemNode *first, char *buff);
+void remove_(itemNode *first, char *buff);
 itemNode *read_db(void);
 
 int main(int argc, char *argv[])
@@ -34,6 +35,7 @@ int main(int argc, char *argv[])
 
 	if (strcmp(input_string, "print") == 0) print(first);
 	else if (strcmp(input_string, "add") == 0) add(first, buff);
+	else if (strcmp(input_string, "remove") == 0) remove_(first, buff);
 	else printf("Unrecognized command\n");
     }
     return 0;
@@ -126,6 +128,52 @@ void add(itemNode *first, char *buff)
 	if (strcmp(p->id, id) == 0)
 	{
 	    p->qty += qty;
+	    printf("ACK\n");
+	    return;
+	}
+    }
+    printf("NAK Unknown Item\n");
+}
+
+void remove_(itemNode *first, char *buff)
+{
+    char *token = NULL;
+    char id[16];
+    unsigned short qty;
+
+    // Throwaway token for command
+    token = strtok(buff, " ");
+
+    // Token for id
+    token = strtok(NULL, ":");
+    if (token == NULL)
+    {
+	printf("NAK Incorrect syntax.\n");
+	return;
+    }
+    sscanf(token, "%s", id);
+
+    // Token for quantity
+    token = strtok(NULL, ":");
+    if (token == NULL)
+    {
+	printf("NAK Incorrect syntax.\n");
+	return;
+    }
+    sscanf(token, "%hu", &qty);
+
+    // Search in linked list to add quantity
+    itemNode *p;
+    for (p = first; p != NULL; p = p->next)
+    {
+	if (strcmp(p->id, id) == 0)
+	{
+	    if ( p->qty < qty )
+	    {
+		printf("NAK Insufficient Quantity\n");
+		return;
+	    }
+	    p->qty -= qty;
 	    printf("ACK\n");
 	    return;
 	}
