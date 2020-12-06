@@ -16,41 +16,15 @@ int prompt(char **buff, size_t *len, FILE *fp);
 int get_desc_column_size(itemNode *first);
 int get_id_column_size(itemNode *first);
 void print(itemNode *first);
+itemNode *read_db(void);
 
 int main(int argc, char *argv[])
 {
-    FILE *fp;
-
-    // Read database
-    if ((fp = fopen("inv.dat", "r")) == NULL)
-    {
-	printf("Can't open inv.dat\n");
-	exit(EXIT_FAILURE);
-    }
-
-    char id[16], desc[31];
-    unsigned short qty;
-    itemNode *first;
-    itemNode *new_node;
-
-    first = NULL;
-    while( fscanf(fp, "%[^:]:%hu:%[^:\n]\n", id, &qty, desc) != EOF )
-    {
-	new_node = malloc(sizeof(itemNode));
-	strcpy(new_node->id, id);
-	new_node->qty = qty;
-	strcpy(new_node->desc, desc);
-	new_node->next = first;
-	first = new_node;
-    }
-
-    fclose(fp);
-    fp = NULL;
-    new_node = NULL;
+    itemNode *first = read_db();
 
     char *buff = NULL ;
     size_t len = 0 ;
-    char input_string[10];
+    char input_string[100];
 
     while( prompt( &buff, &len, stdin ) != -1 )
     {
@@ -116,4 +90,37 @@ void print(itemNode *first)
     {
 	printf("%-*s  %5hu    %-*s\n", max_desc_length, p->desc, p->qty, max_id_length, p->id);
     }
+}
+
+itemNode* read_db(void)
+{
+    FILE *fp;
+
+    if ((fp = fopen("inv.dat", "r")) == NULL)
+    {
+	printf("Can't open inv.dat\n");
+	exit(EXIT_FAILURE);
+    }
+
+    char id[16], desc[31];
+    unsigned short qty;
+    itemNode *first;
+    itemNode *new_node;
+
+    first = NULL;
+    while( fscanf(fp, "%[^:]:%hu:%[^:\n]\n", id, &qty, desc) != EOF )
+    {
+	new_node = malloc(sizeof(itemNode));
+	strcpy(new_node->id, id);
+	new_node->qty = qty;
+	strcpy(new_node->desc, desc);
+	new_node->next = first;
+	first = new_node;
+    }
+
+    fclose(fp);
+    fp = NULL;
+    new_node = NULL;
+
+    return first;
 }
