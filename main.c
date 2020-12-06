@@ -18,6 +18,7 @@ int get_id_column_size(itemNode *first);
 void print(itemNode *first);
 void add(itemNode *first, char *buff);
 void remove_(itemNode *first, char *buff);
+void quit(itemNode *first);
 itemNode *read_db(void);
 
 int main(int argc, char *argv[])
@@ -36,6 +37,7 @@ int main(int argc, char *argv[])
 	if (strcmp(input_string, "print") == 0) print(first);
 	else if (strcmp(input_string, "add") == 0) add(first, buff);
 	else if (strcmp(input_string, "remove") == 0) remove_(first, buff);
+	else if (strcmp(input_string, "quit") == 0) quit(first);
 	else printf("Unrecognized command\n");
     }
     return 0;
@@ -179,6 +181,37 @@ void remove_(itemNode *first, char *buff)
 	}
     }
     printf("NAK Unknown Item\n");
+}
+
+void quit(itemNode *first)
+{
+    FILE *fp;
+    itemNode *p;
+
+    if ((fp = fopen("inv.dat", "w")) == NULL)
+    {
+	printf("Can't open inv.dat\n");
+	exit(EXIT_FAILURE);
+    }
+
+    // Write file to disk
+    for (p = first; p != NULL; p = p->next)
+	fprintf(fp, "%s:%hu:%s\n", p->id, p->qty, p->desc);
+
+    // Clear linked list
+    while (first != NULL)
+    {
+	p = first;
+	first = first->next;
+	free(p);
+    }
+
+    fclose(fp);
+    fp = NULL;
+    p = NULL;
+
+    // Exit program
+    exit(EXIT_SUCCESS);
 }
 
 itemNode* read_db(void)
