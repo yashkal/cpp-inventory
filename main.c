@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
 {
     itemNode *first = read_db();
 
-    char *buff = NULL ;
+    char *buff = NULL, *token = NULL ;
     size_t len = 0 ;
     char input_string[100];
 
@@ -32,6 +32,29 @@ int main(int argc, char *argv[])
 	sscanf(buff, "%s", input_string);
 
 	if (strcmp(input_string, "print") == 0) print(first);
+	else if (strcmp(input_string, "add") == 0)
+	{
+	    char id[16];
+	    unsigned short qty;
+
+	    token = strtok(buff, " ");
+
+	    token = strtok(NULL, ":");
+	    sscanf(token, "%s", id);
+
+	    token = strtok(NULL, ":");
+	    sscanf(token, "%hu", &qty);
+
+	    itemNode *p;
+	    for (p = first; p != NULL; p = p->next)
+	    {
+		if (strcmp(p->id, id) == 0)
+		{
+		    p->qty += qty;
+		    break;
+		}
+	    }
+	}
 	else printf("Unrecognized command\n");
     }
     return 0;
@@ -87,9 +110,7 @@ void print(itemNode *first)
     // print items in database
     itemNode *p;
     for (p = first; p != NULL; p = p->next)
-    {
 	printf("%-*s  %5hu    %-*s\n", max_desc_length, p->desc, p->qty, max_id_length, p->id);
-    }
 }
 
 itemNode* read_db(void)
