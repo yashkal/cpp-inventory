@@ -18,9 +18,6 @@ int get_id_column_size(itemNode *p);
 
 int main(int argc, char *argv[])
 {
-    char *buff = NULL ;
-    size_t len = 0 ;
-    char input_string[10];
     FILE *fp;
 
     // Read database
@@ -30,28 +27,29 @@ int main(int argc, char *argv[])
 	exit(EXIT_FAILURE);
     }
 
-    // Read one line of input from file
-    // Review linked list on page 428 in book
-
+    char id[16], desc[31];
+    unsigned short qty;
     itemNode *first;
     itemNode *new_node;
 
     first = NULL;
-
-    new_node = malloc(sizeof(itemNode));
-    fscanf(fp, "%[^:]:%hu:%[^:\n]\n", new_node->id, &new_node->qty, new_node->desc);
-    new_node->next = first;
-    first = new_node;
-
-    new_node = malloc(sizeof(itemNode));
-    fscanf(fp, "%[^:]:%hu:%[^:\n]\n", new_node->id, &new_node->qty, new_node->desc);
-    new_node->next = first;
-    first = new_node;
+    while( fscanf(fp, "%[^:]:%hu:%[^:\n]\n", id, &qty, desc) != EOF )
+    {
+	new_node = malloc(sizeof(itemNode));
+	strcpy(new_node->id, id);
+	new_node->qty = qty;
+	strcpy(new_node->desc, desc);
+	new_node->next = first;
+	first = new_node;
+    }
 
     fclose(fp);
     fp = NULL;
+    new_node = NULL;
 
-    // Get max size for string fields to adjust printing size
+    char *buff = NULL ;
+    size_t len = 0 ;
+    char input_string[10];
     int max_desc_length = get_desc_column_size(first);
     int max_id_length = get_id_column_size(first);
 
